@@ -1,0 +1,92 @@
+
+MVC 案例
+
+	没有业务层,直接由 Servlet 调用 DAO, 所以也没有
+	事务操作.所以可以在 DAO 中直接获取 Connection
+	对象
+
+	采取 MVC 设计模式
+	
+	使用到的技术:
+	   MVC 设计模式: JSP、Servlet、POJO
+	   数据库使用 MySQL
+	   连接数据库需要使用 C3P0 数据库连接池
+	   JDBC 工具采用 DBUtils
+	   页面上的提示操作使用JQuery
+
+	技术难点:
+	
+	多个请求如何使用一个 Servlet:
+	方法1:
+	添加:customerServlet?method=add
+	查询:customerServlet?method=query
+	删除:customerServlet?method=delete
+	
+	1、获取 method 请求参数的值.
+	2、根据 method 的值调用对应的方法.
+	
+	不足:
+	① 当添加一个请求时,需要在 Servlet 中修改两处代码. switch、添加方法.
+	② url 中使用 method=xxx 暴露了要调用的方法.不私密,有安全隐患.
+	
+	方法2:
+	添加:addCustomer.do
+	查询:query.do
+	删除:deleteCustomer.do
+	
+	url-pattern: *.do
+	
+	1、获取 servletPath:addCustomer.do 或 query.do 或 deleteCustomer.do 等.
+	2、去除 / 和 .do 得到要调用的方法名.
+	3、利用反射调用 servletPath 对应的方法.	
+	4、创建对应的方法.
+	
+	
+	
+	
+	如何模糊查询
+	如何在创建或修改的情况下,验证用户名是否已经被使用,并给出提示.
+	
+
+一、建数据表:
+Create table ajax.customersNew(
+	id int primary key auto_increment,
+	name varchar(30) not null unique,
+	address varchar(30),
+	phone varchar(30)
+)
+
+为 name 字段添加唯一约束:
+alter table ajax.customersNew add constraint name_uk unique(name);
+
+
+二、	
+	1、加入 C3P0 数据源
+		① 加 2 个包
+			> C3P0
+			> 数据库驱动的 jar 包
+		② 在 src 下拷贝或创建 c3p0-config.xml, 配置	
+		
+		
+	使用 dbutils	
+	① 加入 commons-dbutils-1.7.jar
+	
+	② 新建一个 QueryRunner 对象
+	
+	
+	
+	
+
+	2、编写 DAO、JDBCUtils 工具类 和 CustomerDAO 接口
+
+		> DAO<T>{
+
+	
+	
+	}
+	3、提供 CustomerDAO 接口的实现类: CustomerDAOJDBCImpl
+
+
+
+
+
