@@ -127,7 +127,7 @@ public class CustomerServlet extends HttpServlet {
 		String phone = request.getParameter("phone");	
 		
 		
-		//transcoder
+	
 		
 		//2. 检验 name 是否已经被占用:
 		//2.1 调用 CustomerDAO 的 getCountWithName(String name) 获取 name 在数据库中是否存在
